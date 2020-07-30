@@ -2,21 +2,13 @@
 # coding: utf-8
 
 # ### Title: Assignment 3: Analyzing Facebook Large Page-Page Network
-# # Author: 200027476
+# # Author: 200027476 Stefan Robb
+# Network analysis on the Facebook Large Page-Page Network
 
-# ## Introduction:
-# In assignment 2, you will get familier with NetworkX (https://networkx.github.io/) for network analysis (creating network, reporting network statistics, calculating three node centrality measures, and implement two link prediction methods). NetworkX has nice documentation including all graph algorithms it supports: https://networkx.github.io/documentation/stable/reference/index.html
-# 
-# You can always add more code/markdown cells.
-# 
 # ## Dataset
 # The dataset we are using in this assignment is from Facebook. A detailed description of the dataset could be found at: https://snap.stanford.edu/data/facebook-large-page-page-network.html.
 # 
 # The whole network is a page-page graph of verified Facebook sites. Nodes represent official Facebook pages while the links are mutual likes between sites. Node features are extracted from the site descriptions that the page owners created to summarize the purpose of the site. This graph was collected through the Facebook Graph API in November 2017 and restricted to pages from 4 categories which are defined by Facebook. These categories are: politicians, governmental organizations, television shows and companies. 
-# 
-# ## Important Note:
-# Don't forget to provide a summary of your findings/results for Task 2-4.
-# Submit your code (executed ipynb file) to onq.
 
 # In[1]:
 
@@ -33,12 +25,6 @@ import node2vec2
 from gensim.models import Word2Vec
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import average_precision_score
-
-
-# ## Task 1: load dataset and create network (10 points).
-# Download data from https://snap.stanford.edu/data/facebook-large-page-page-network.html.
-# In this step, you need to load edge and node information from raw dataset. Usually, the edges and nodes are saved in csv files.
-# To load and create network in networkx, please read the following tutorial:https://programminghistorian.org/en/lessons/exploring-and-analyzing-network-data-with-python
 
 # In[40]:
 
@@ -60,33 +46,6 @@ G = nx.Graph()
 G.add_nodes_from(node_names)
 G.add_edges_from(edges)
 
-
-# ## Task 2: network analysis, reporting basic statistics (10 points). 
-# 
-# Basic network statistics include:
-# 1) number of nodes in the network
-# 2) number of edges in the network
-# 3) average degree of node
-# 4) radius of the network
-# 5) diameter of the network 
-# 6) density of the network
-# 
-# ref: https://networkx.github.io/documentation/stable/auto_examples/basic/plot_properties.html#sphx-glr-auto-examples-basic-plot-properties-py
-# 
-# Please also draw a figure representing the node degree distribution in the network.
-# You can get degree distribution (count how frequent each degree value appear in the network) by:
-# 
-# ``` 
-# degree_sequence = sorted([d for n, d in G.degree()], reverse=True)  # degree sequence
-# degreeCount = collections.Counter(degree_sequence)
-# deg, cnt = zip(*degreeCount.items())
-#  ```
-#  
-# Plot the historgram distribution of degree, and then decide whether you need to create a log-log plot (using library matplotlib.pyplot) representing the degree distribution.
-# ref. https://networkx.github.io/documentation/stable/auto_examples/drawing/plot_degree_histogram.html
-# 
-#  
-# 
 
 # In[3]:
 
@@ -164,21 +123,6 @@ plt.bar(list(degrees_log.keys()), degrees_log.values(), color='b')
 plt.show()
 
 
-# Findings for Task 2: Please summarize your findings from the above analysis, e.g., describe the characteristics of the network based on the network statistics.
-# 
-# 
-
-# 1. The number of a nodes and edges aswell as their corresponding radius, diameter and average degree of the nodes is shown above.
-# 2. The distribution of the path lengths resemembles the normal distribution with mean and mode path length of 5.
-# 3. The distribution of the node degree is strongly positively skewed and therefore has a lower mode.
-# 4. The histogram of the path lengths originally looks exponentially skewed and therefore the logarithmic plot is more representative.
-
-# ## Task 3:  Node centrality analysis (30 points)
-# 
-
-# Pick three centrality metrics that you are interested to invesitgate and report at least three findings (e.g., what are the nodes with high centrality values, how the centrality values distributed in the network)
-# Ref: https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html
-
 # In[10]:
 
 
@@ -231,23 +175,6 @@ for i in range(1,21):
     print(nodes[int(max(eigenvector.items(), key=operator.itemgetter(1))[0])][2], ": ",           max(eigenvector.items(), key=operator.itemgetter(1))[1])
     del eigenvector[max(eigenvector.items(), key=operator.itemgetter(1))[0]]
 
-
-# Findings for Task 3: Please summarize your findings from the above analysis
-# 
-
-# Findings:
-# 1. The Facebook node has the highest centralily as one wold expect. This indicates that Facebook is the most connected node. The other nodes with high centrality are strongly recognized name brands.
-# 2. The nodes with the highest eigenvector centrality all belong to the same company indicating that there are duplicates in the dataset.
-# 3. After removing the duplicate nodes the three lists of the top 20 centrality metrics were fairly disjoint.
-# 4. Most of the centrality probably comes from one class of nodes as can be seen in the graph representing the network.
-
-# ## Task 4:  link prediction (40 points).
-# Pick one unsupervised and one supervised link prediction algorithm, implement the algorithms and compare the performance of two approaches. 
-# You must consider at least one ranking based evaluation metric and one classification based evalution metric.
-# 
-# Ref.https://github.com/lucashu1/link-prediction/blob/master/link-prediction-baselines.ipynb
-# https://github.com/lucashu1/link-prediction/blob/master/node2vec.ipynb
-# 
 
 # In[15]:
 
@@ -657,17 +584,3 @@ print('node2vec Validation ROC score: ', str(val_roc))
 print('node2vec Validation AP score: ', str(val_ap))
 print('node2vec Test ROC score: ', str(test_roc))
 print('node2vec Test AP score: ',str(test_ap))
-
-
-# Findings for Task 4: Please summarize the performance of two approaches.
-# 
-# 
-
-# 1. The node2vec method performs significantly better than the Jaccard scores method.
-# 2. The ROC and AP scores of the two methods are shown above.
-
-# ## Task 5:  take-away message (10 points)
-# Please summary your findings from the above analysis (at least 2 findings):
-
-# 1. Determining the meanings of the centrality values was very interesting to be coming from a mathematical background. I learned that centrality is a metric of how important the node in (central) in the network. Closeness is similar however the center is oriented based on the node in question and not the actual center of the network. Finally eigenvector centrality is a natural extension to degree centrality.
-# 2. Completing this assignment also made me think about other types of data that can be represented by a network and possible areas of exploration and analysis.
