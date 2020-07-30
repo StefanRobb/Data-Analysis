@@ -5,8 +5,10 @@
 
 
 # CMPE365 Assignment 4
-# Stefan Robb 20027476
+# @author Stefan Robb 20027476
 # I certify that this submission contains my own work, except as noted.
+
+# Analyzes two similar files to detect differences.
 
 
 # ## Command Line Arguments
