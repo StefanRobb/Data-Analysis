@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# Neural network assignment
+# @author Stefan Robb
+
 # In[70]:
 
 
