@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# Code for a data analysis project on presidential speeches and adtempting to predict intelligence scores of the speeches based on word frequency.
+# Extracts all the filler words and counts word frequencies.
+
+# @author Stefan Robb
+
 # In[1]:
 
 
