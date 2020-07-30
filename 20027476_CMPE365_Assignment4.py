@@ -8,7 +8,7 @@
 # @author Stefan Robb 20027476
 # I certify that this submission contains my own work, except as noted.
 
-# Analyzes two similar files to detect differences.
+# Decodes files into their Huffman code and checks two files against eachother in the most efficient manner possible. 
 
 
 # ## Command Line Arguments
